@@ -21,3 +21,17 @@ exports['Simpler'] = function(test) {
     test.done();
 };
 
+exports['rows and columns'] = function(test) {
+    var x = poss.row(5).remove(poss.col(2));
+    test.equal(8,x.size());
+    var y = x.remove(poss.blk(5));
+    test.equal(5,y.size());
+    test.done();
+}
+
+exports['Block and setOfSet'] = function(test) {
+    var x = poss.blk(5).setOfSet().filter(function(x){return x.size()==2;});
+    test.equal(36,x.size());
+    test.done();
+}
+
