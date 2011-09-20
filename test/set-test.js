@@ -24,3 +24,12 @@ exports['single'] = function(test) {
     test.equal(4, set.singleValue());
     test.done();
 }
+
+exports['map'] = function(test) {
+    var set = new Set([1,2,3,5,6]);
+    var sum=0;
+    set.map(function(x) { sum += x; })
+    test.equal(17, sum);
+    test.done();
+}
+
