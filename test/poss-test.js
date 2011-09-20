@@ -35,3 +35,16 @@ exports['Block and setOfSet'] = function(test) {
     test.done();
 }
 
+exports['myBlk, myCol and myRow tests'] = function(test) {
+    var pos = new Pos(5,6);
+    var r = poss.myRow(pos);
+    test.equal(true, r.has(pos));
+    var c = poss.myCol(pos);
+    test.equal(true, c.has(pos));
+    var b = poss.myBlk(pos);
+    test.equal(true, b.has(pos));
+    var epos=r.cut(c).cut(b);
+    test.equal(true, epos.has(pos));
+    test.equal(1, epos.size());
+    test.done();
+}
