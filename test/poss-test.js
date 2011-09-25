@@ -48,3 +48,13 @@ exports['myBlk, myCol and myRow tests'] = function(test) {
     test.equal(1, epos.size());
     test.done();
 }
+
+exports['map test'] = function(test) {
+    var pos = new Pos(4,1);
+    var pp = poss.myBlk(pos);
+    var xsum=0, ysum=0;
+    pp.map(function(p) { xsum+=p.x; ysum+=p.y;})
+    test.equal(36,xsum);
+    test.equal(9, ysum);
+    test.done();
+}
