@@ -6,7 +6,7 @@ LBIN="./node_modules/.bin"
 .PHONY : test
 
 test:
-	$(TEST_RUNNER) test/*test.js lib/*/test/*test.js
+	$(TEST_RUNNER) test/*test.js
 
 
 clean:

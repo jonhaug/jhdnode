@@ -33,3 +33,12 @@ exports['map'] = function(test) {
     test.done();
 }
 
+exports['isSet'] = function(test) {
+    var set = new Set([1,2]);
+    test.ok(Set.isSet(set));
+    test.ok(Set.isSet(set.setOfSet()));
+    test.ok(!Set.isSet(5));
+    test.ok(!Set.isSet(true));
+    test.ok(!Set.isSet([1,2,3]));
+    test.done();
+}

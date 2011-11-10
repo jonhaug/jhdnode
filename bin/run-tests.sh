@@ -1,7 +1,7 @@
 #!/bin/bash
 
 EXPRESSO=./node_modules/.bin/expresso
-NODEUNIT=./node_modules/.bin/nodeunit
+NODEUNIT=nodeunit
 OUTFILE=test.log
 #GREEN="\e[0;32m"
 #RED="\e[1;31m"
@@ -23,6 +23,14 @@ ok() {
     printf "$PFF" $GREEN ok $1
 }
 
+nodeunit_wrap() {
+    if $NODEUNIT $1 2>&1 | tee -a $OUTFILE | tail -1 | grep -q 'OK'; then
+	return 0
+    else
+	return 1
+    fi
+}
+
 touch $OUTFILE
 cp /dev/null $OUTFILE
 
@@ -34,7 +42,7 @@ for TEST_FILE in $@; do
     echo "----------------------------------------" >> $OUTFILE
     echo $TEST_FILE >> $OUTFILE
     if [ ${TEST_FILE: -8} == "-test.js" ]; then
-        if $NODEUNIT $TEST_FILE  >> $OUTFILE 2>&1; then
+        if nodeunit_wrap $TEST_FILE ; then
             ok  $TEST_FILE
         else
             FAILED="$FAILED $TEST_FILE"
