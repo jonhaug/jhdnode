@@ -14,6 +14,17 @@ var testBoard =
     '.........\n' +
     '.........\n';
 
+var sndTestBoard =
+    '53..7....\n' +
+    '6..195...\n' +
+    '.98....6.\n' +
+    '8...6...3\n' +
+    '4..8.3..1\n' +
+    '7...2...6\n' +
+    '.6....28.\n' +
+    '...419..5\n' +
+    '....8..79\n';
+
 exports['One line'] = function (test) {
     var b = new Board();
     var arr = b.row2arr('..2.59...');
@@ -22,15 +33,32 @@ exports['One line'] = function (test) {
     test.done();
 };
 
+
 exports['Full board'] = function(test) {
-    test.expect(3);
+    test.expect(4);
     var b = new Board(testBoard);
+    test.equal(9,b.arr.length);
     //console.log(b);
     var pos = new Pos(1,4);
-    console.log('4,1=' + b.get(pos));
+    //console.log('4,1=' + b.get(pos));
     test.equal(1,b.get(pos));
     var niner=new Set([0,1,2,3,4,5,6,7,8]);
     test.ok(niner.equals(b.get(new Pos(1,1))));
     test.ok(!niner.equals(b.get(new Pos(1,4))));
+    //console.log(b.toString());
+    test.done();
+};
+exports['Snd full board'] = function(test) {
+    test.expect(4);
+    var b = new Board(sndTestBoard);
+    test.equal(9,b.arr.length);
+    //console.log(b);
+    var pos = new Pos(4,0);
+//    console.log('4,1=' + b.get(pos));
+    test.equal(4,b.get(pos));
+    var niner=new Set([0,1,2,3,4,5,6,7,8]);
+    test.ok(niner.equals(b.get(new Pos(1,1))));
+    test.ok(!niner.equals(b.get(new Pos(1,4))));
+    console.log(b.toString());
     test.done();
 };
