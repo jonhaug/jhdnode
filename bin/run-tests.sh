@@ -1,8 +1,11 @@
 #!/bin/bash
 
-EXPRESSO=./node_modules/.bin/expresso
-NODEUNIT=nodeunit
-OUTFILE=test.log
+EXPRESSO="node node_modules/expresso/bin/expresso"
+NODEUNIT="node node_modules/nodeunit/bin/nodeunit"
+NODE=node
+OUTFILE=/dev/tty
+TMPFILE=/tmp/buster.tmp
+
 #GREEN="\e[0;32m"
 #RED="\e[1;31m"
 #OFF="\e[0m"
@@ -23,16 +26,41 @@ ok() {
     printf "$PFF" $GREEN ok $1
 }
 
-nodeunit_wrap() {
-    if $NODEUNIT $1 2>&1 | tee -a $OUTFILE | tail -1 | grep -q 'OK'; then
-	return 0
+run-buster() {
+    local CHECK_FILE=$TMPFILE
+    if [ $REDIR -eq 1 ]; then
+        $NODE $1 >> $OUTFILE 2>&1
+        CHECK_FILE=$OUTFILE
     else
-	return 1
+        $NODE $1 | tee $TMPFILE >> $OUTFILE 2>&1
+    fi
+    local A=`tail -1 $CHECK_FILE`
+    local B="${A#*assertions, }"
+    local B="${B#*assertion, }"
+    local C=${B% timeouts*}
+#    echo "<$A> <$B> <$C>"
+    if [ "$C" = "0 failures, 0 errors, 0" ]; then
+        return 0
+    else
+        return 1
     fi
 }
 
-touch $OUTFILE
-cp /dev/null $OUTFILE
+REDIR=0
+if [ "$1" = "-o" ]; then
+    shift
+    OUTFILE=$1
+    shift
+    touch $OUTFILE
+    cp /dev/null $OUTFILE
+    REDIR=1
+fi
+
+message() {
+    if [ "$REDIR" -eq 1 ]; then
+        echo $1
+    fi
+}
 
 FAILED=""
 FAIL_COUNT=0
@@ -42,8 +70,16 @@ for TEST_FILE in $@; do
     echo "----------------------------------------" >> $OUTFILE
     echo $TEST_FILE >> $OUTFILE
     if [ ${TEST_FILE: -8} == "-test.js" ]; then
-        if nodeunit_wrap $TEST_FILE ; then
+        if $NODEUNIT $TEST_FILE  >> $OUTFILE 2>&1; then
             ok  $TEST_FILE
+        else
+            FAILED="$FAILED $TEST_FILE"
+            D=$((FAIL_COUNT++))
+            failed $TEST_FILE
+        fi
+    elif [ ${TEST_FILE: -9} == "-btest.js" ]; then
+        if run-buster $TEST_FILE; then
+            ok $TEST_FILE
         else
             FAILED="$FAILED $TEST_FILE"
             D=$((FAIL_COUNT++))
@@ -69,9 +105,11 @@ if [ "$FAILED" != "" ]; then
       color $RED "$FAIL_COUNT tests failed: "; echo $FAILED
     fi
     echo
-    echo "Output in $OUTFILE"
+    message "Output in $OUTFILE"; echo
     exit 1
 fi
 
 echo
-color $GREEN "All tests OK"; echo
+color $GREEN "All tests OK"; echo "   "
+message "   (Output in $OUTFILE)"
+echo
