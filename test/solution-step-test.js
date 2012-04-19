@@ -55,3 +55,28 @@ exports['Full board'] = function(test) {
     test.done();
 }
 
+exports['Full board count all'] = function(test) {
+    var b = new Board(sndTestBoard);
+    var countAll=0;
+    b.map(function(val, pos) { if (sing(val)) countAll++;});
+
+    var countCol=0;
+    for (var i=0; i<9; i++) {
+	b.map(function(val, pos) { if (sing(val)) countCol++;}, Poss.col(i));
+    }
+    test.equal(countAll,countCol);
+
+    var countRow=0;
+    for (var i=0; i<9; i++) {
+	b.map(function(val, pos) { if (sing(val)) countRow++;}, Poss.row(i));
+    }
+    test.equal(countAll,countRow);
+
+    var countBlk=0;
+    for (var i=0; i<9; i++) {
+	b.map(function(val, pos) { if (sing(val)) countBlk++;}, Poss.blk(i));
+    }
+    test.equal(countAll,countBlk);
+
+    test.done();
+}
