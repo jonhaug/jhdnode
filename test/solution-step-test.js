@@ -3,7 +3,7 @@ var Board = require('../lib/board');
 var Poss = require('../lib/poss');
 var Set = require('../lib/set');
 
-
+// 3571841597 --> 1345789 --> 0234678
 var sndTestBoard =
     '53..7....\n' +
     '6..195...\n' +
@@ -21,9 +21,9 @@ exports['One line'] = function (test) {
     var b = new Board();
     var arr = b.row2arr('..2.59...');
     // console.log('arr=' + arr);
-    test.equal(2,arr[2]);
-    test.equal(5,arr[4]);
-    test.equal(9,arr[5]);
+    test.equal(1,arr[2]);
+    test.equal(4,arr[4]);
+    test.equal(8,arr[5]);
     test.ok(niner.equals(arr[0]));
     test.done();
 };
@@ -78,5 +78,21 @@ exports['Full board count all'] = function(test) {
     }
     test.equal(countAll,countBlk);
 
+    test.done();
+}
+
+exports['Is possible to insert a number?'] = function(test) {
+    var b = new Board(sndTestBoard);
+    var pos = new Pos(0,3);
+    test.ok(! b.getValue(pos));
+    var poss = Poss.myPoss(pos);
+    test.equal(21, poss.size());
+    var knowns = new Set([]);
+    b.map(function(x) { if (sing(x)) { knowns = knowns.add(x);}}, poss);
+    test.ok(knowns.equals(new Set([0,2,3,4,6,7,8])));
+    
+    var other = niner.remove(knowns);
+
+    
     test.done();
 }

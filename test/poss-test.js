@@ -58,3 +58,12 @@ exports['map test'] = function(test) {
     test.equal(9, ysum);
     test.done();
 }
+
+exports['myPoss test'] = function(test) {
+    var pos = new Pos(3,3);
+    test.equal(21, poss.myPoss(pos).size());
+
+    var ppp = poss.myPoss(new Pos(1,1)).union(poss.myPoss(new Pos(3,6))).union(poss.myPoss(new Pos(6,3)));
+    test.equal(27+18+12,ppp.size());
+    test.done();
+}
