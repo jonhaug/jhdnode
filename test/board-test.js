@@ -62,3 +62,15 @@ exports['Snd full board'] = function(test) {
     console.log(b.toString());
     test.done();
 };
+exports['is possible'] = function(test) {
+    test.expect(7);
+    var b = new Board(sndTestBoard);
+    test.ok(! b.isPossible(new Pos(0,3),2));
+    test.ok(! b.isPossible(new Pos(3,3),2));
+    test.ok( b.isPossible(new Pos(2,4),2));
+    test.ok(! b.isPossible(new Pos(4,6),2));
+    test.ok(! b.isPossible(new Pos(6,8),2));
+    test.ok( b.isPossible(new Pos(7,6),2));
+    test.ok( b.isPossible(new Pos(7,7),2));
+    test.done();
+}
