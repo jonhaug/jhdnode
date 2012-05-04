@@ -45,10 +45,10 @@ exports['Full board'] = function(test) {
     test.equal(30,singleCount);
     singleCount=0;
     b.map(function(val, pos) { if (sing(val)) singleCount++;}, Poss.col(2));
-    test.equal(3,singleCount);
+    test.equal(1,singleCount);
     singleCount=0;
     b.map(function(val, pos) { if (sing(val)) singleCount++;}, Poss.row(2));
-    test.equal(1,singleCount);
+    test.equal(3,singleCount);
     singleCount=0;
     b.map(function(val, pos) { if (sing(val)) singleCount++;}, Poss.blk(2));
     test.equal(1,singleCount);

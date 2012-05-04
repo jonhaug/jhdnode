@@ -74,3 +74,15 @@ exports['is possible'] = function(test) {
     test.ok( b.isPossible(new Pos(7,7),2));
     test.done();
 }
+exports['find an only pos'] = function(test) {
+    test.expect(3);
+    var b = new Board(sndTestBoard);
+    var c5 = Poss.col(5);
+    var b1 = Poss.blk(1);
+    var r0 = Poss.row(0);
+    var pos = new Pos(0,5);
+    test.ok( b.mustBe(pos, c5, 7));
+    test.ok( b.mustBe(pos, b1, 7));
+    test.ok( ! b.mustBe(pos, r0, 7));
+    test.done();
+}
