@@ -49,8 +49,10 @@ exports['Full board'] = function(test) {
     test.done();
 };
 exports['Snd full board'] = function(test) {
-    test.expect(4);
+    test.expect(5);
     var b = new Board(sndTestBoard);
+    var mpos = new Pos(1,3);
+    test.equal(0, b.get(mpos));
     test.equal(9,b.arr.length);
     //console.log(b);
     var pos = new Pos(4,0);
