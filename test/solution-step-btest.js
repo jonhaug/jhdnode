@@ -90,6 +90,7 @@ buster.testCase("Solution step", {
 	assert(knowns.equals(new Set([0,2,3,4,6,7,8])));
     
 	var other = niner.remove(knowns);
+	assert(other.equals(new Set([1,5])));
     },
 });
 
