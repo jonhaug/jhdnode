@@ -34,7 +34,7 @@ run-buster() {
     else
         $NODE $1 | tee $TMPFILE >> $OUTFILE 2>&1
     fi
-    local A=`tail -1 $CHECK_FILE`
+    local A=`tail -2 $CHECK_FILE | head -1`
     local B="${A#*assertions, }"
     local B="${B#*assertion, }"
     local C=${B% timeouts*}
